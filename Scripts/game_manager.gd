@@ -1,14 +1,17 @@
 extends Node2D
 
-@onready var plantScene = preload("res://Scenes/plant.tscn")
-@export var menuOptions = []
+@onready var main_menu: Control = $"../MainMenu"
+@onready var inventory_ui: Control = $"../UIManager/InventoryUI"
+var inventory_open := false
 
-var player = null
+func _process(delta):
+	if Input.is_action_just_pressed("open_main_menu"):
+		main_menu.visible = true
 
 func _ready():
-	player = get_tree().get_first_node_in_group("player")
+	inventory_ui.visible = false
 
-func _input(event):
-	if event.is_action_pressed("interact"):
-		print("Interacting with ", player.nearestItem)
-		
+func _unhandled_input(event):
+	if event.is_action_pressed("open_player_inventory"):
+		inventory_open = !inventory_open
+		inventory_ui.visible = inventory_open
